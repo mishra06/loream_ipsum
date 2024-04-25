@@ -1,5 +1,5 @@
 import { useState } from "react";
-import './Main.css'
+
 function Main() {
     let arr = [
         "Deep in the heart of the Amazon rainforest, a symphony of life unfolds. Towering trees, draped in lush vines, create a dense canopy that filters sunlight into a mosaic of shadows below. Exotic birds with vibrant plumage dart between branches, their calls echoing through the emerald expanse. Jaguars, elusive and majestic, move silently through the underbrush, their golden eyes keenly observing the dance of life. The air is thick with humidity, carrying the scent of earth and vegetation. This ancient forest, a crucible of biodiversity, is a testament to the delicate balance of nature and the wonders it conceals.",
@@ -22,46 +22,69 @@ function Main() {
       
         "In the heart of the Australian Outback, the red earth stretches to the horizon, dotted with ancient rock formations that whisper stories of the Dreamtime. Kangaroos bound across the landscape, and the haunting cry of the didgeridoo carries through the vastness. The night sky, untouched by city lights, becomes a tapestry of stars that seems to go on forever. This harsh and rugged land, where time seems to move at its own pace, is a canvas upon which the stories of indigenous cultures are painted with the brushstrokes of tradition and connection to the land."
     ]
-    const [number, setNumber] = useState(" ");
-    const [article, setArticle] = useState([])
-    function numberupdate(e) {
-        setNumber(e.target.value);
+
+
+  const [number, setNumber] = useState("");
+  const [article, setArticle] = useState([]);
+
+  function numberupdate(e) {
+    setNumber(e.target.value);
+  }
+
+  function articleupdate() {
+
+    if ( number === 0) {
+      alert("OOPS! You don't want any article");
+      return;
+    } else if (number > 10) {
+      alert("OOPS! You want too many articles! Go slower!");
+      return;
     }
-    function articleupdate() {
-        if (number === 0) {
-            alert("OOPS! you dont want any article");
-            return;
-        }
-        else if (number > 10) {
-            alert("OOPS! you want alot go slower!");
-            return;
-        }
-        
-        setArticle(arr.slice(0, number));
-        
+
+    setArticle(arr.slice(0, parseInt(number)));
+  }
+
+  function onKeypress(e) {
+    if (e.key === 'Enter') {
+      articleupdate();
     }
-    return (
-        <div class="container">
-            <div className="inner">
-                <h2>TIRED OF BORING LOREM IPSUM?</h2>
-            <div className="innersec">
-                <p>Paragraphs:</p>  
-                <input className="inputss" type="number" placeholder="0" onChange={numberupdate} />
-                <button  onClick={articleupdate} className="button">Generate</button>
-            </div>
-                <div className="cards">
-                {
-                    article.map((item) =>{
-                        return(
-                            <div className="articleCard">
-                                <p>{item}</p>
-                            </div>
-                        );
-                    })
-                }
-                </div>
+  }
+
+  return (
+    <div className="container">
+      <div>
+        <h1 style={{ color: '#94360B' }}>TIRED OF BORING LOREM IPSUM?</h1>
+        <div style={{ display: 'flex', justifyContent: 'center', fontSize: '24px', gap: "16px", marginTop: "30px" }}>
+          <p>Paragraphs:</p>
+          <input
+            type="number"
+            placeholder="0 to 10"
+            step={1}
+            min={1}
+            max={10}
+            value={number}
+            onChange={numberupdate}
+            onKeyDown={onKeypress}
+            style={{ border: "none" }}
+          />
+          <button
+            onClick={articleupdate}
+            style={{ backgroundColor: '#F5873D', color: 'white', border: 'none', padding: '5px', borderRadius: '4px' }}
+          >
+            Generate
+          </button>
         </div>
+        <div className="cards">
+          {article.map((item, index) => {
+            return (
+              <div className="articleCard" key={index}>
+                <p>{item}</p>
+              </div>
+            );
+          })}
         </div>
-    )
+      </div>
+    </div>
+  );
 }
 export default Main;
